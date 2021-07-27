@@ -1,10 +1,8 @@
-import App from './App.svelte';
+import Todo from './Todo.svelte';
 
-const app = new App({
+export const todo = new Todo({
 	target: document.body,
 	props: {
-		name: 'world'
+	name: 'Todo list'
 	}
 });
-
-export default app;
