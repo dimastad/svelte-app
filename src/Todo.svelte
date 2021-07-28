@@ -1,27 +1,31 @@
 <script>
 	import { onMount } from 'svelte';
+    import Input from './Input.svelte';
     export let name;
-    let todos = []
+    let todos = [];
     
-onMount(async () => {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=17`)
-    todos = await res.json()
+    onMount(async () => {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/todos?_start=18&_limit=17`)
+        todos = await res.json();
+    })
 
-    console.log(todos)
-})
+    const getDeleteItem = (id) => {
+        console.log('id ', id)
+    }
 
 
 </script>
 
 <main>
 	<h1>{name}!</h1>
-
+    <Input />
     <section>
         {#each todos as todo }
         <article>
             <h3>Owner Id: {todo.userId}</h3>
             <p>{todo.title}</p>
             <span class="badge">{todo.completed}</span>
+            <span class="close" on:click={getDeleteItem(todo.id)}>&#9747;</span>
         </article>
         {:else}
         <p>loading...</p>
@@ -83,6 +87,7 @@ onMount(async () => {
         border-radius: 1em;
         border: 2px solid grey;
         padding: 0.7em 1.4em;
+        position: relative;
     }
 
     p {
@@ -99,9 +104,21 @@ onMount(async () => {
         color: #fff;
     }
 
+    .close {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+    }
+
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
+		}
+	}
+	@media (max-width: 768px) {
+		section {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
